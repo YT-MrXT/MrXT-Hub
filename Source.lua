@@ -109,10 +109,14 @@ end)
 
 -- // ABAS DO HUB
 
--- HOME (REFORMULADA)
+-- HOME (COM CONVITE DO DISCORD)
 local home = window:CreateTab({ Name = "Home", Title = "Home", Icon = "rbxassetid://96457830014743" })
 home:AddSection("Welcome MrXT Hub")
-home:AddButton({ Name = "Copy Discord Server", Callback = function() setclipboard("https://discord.gg/v3GFFNDj9") end })
+home:AddDiscordInvite({
+	Icon = "rbxassetid://96866982801235",
+	ServerName = "MrXT Hub",
+	Link = "https://discord.gg/v3GFFNDj9",
+})
 
 -- COMBAT
 local combat = window:CreateTab({ Name = "Combat", Title = "Combat", Icon = "rbxassetid://96457830014743" })
