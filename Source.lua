@@ -1,4 +1,4 @@
-return local CatLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/YT-MrXT/lab/refs/heads/main/cat/libary/catlibz"))()
+local CatLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/YT-MrXT/lab/refs/heads/main/cat/libary/catlibz"))()
 
 local window = CatLib:CreateWindow({
 	Title = "MrXT Hub",
