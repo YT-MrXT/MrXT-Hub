@@ -109,11 +109,10 @@ end)
 
 -- // ABAS DO HUB
 
--- HOME
+-- HOME (REFORMULADA)
 local home = window:CreateTab({ Name = "Home", Title = "Home", Icon = "rbxassetid://96457830014743" })
-home:AddSection("MrXT Hub | Ultimate Edition")
-home:AddParagraph({ Title = "Welcome!", Text = "The most complete universal hub.\nDiscord: discord.gg/v3GFFNDj9" })
-home:AddButton({ Name = "Copy Discord Link", Callback = function() setclipboard("https://discord.gg/v3GFFNDj9") end })
+home:AddSection("Welcome MrXT Hub")
+home:AddButton({ Name = "Copy Discord Server", Callback = function() setclipboard("https://discord.gg/v3GFFNDj9") end })
 
 -- COMBAT
 local combat = window:CreateTab({ Name = "Combat", Title = "Combat", Icon = "rbxassetid://96457830014743" })
@@ -171,5 +170,69 @@ utils:AddButton({ Name = "Server Hop", Callback = function()
     for _, v in pairs(x.data) do if v.playing < v.maxPlayers then game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, v.id) end end
 end })
 
-window:Notify({ Title = "MrXT Hub", Text = "All features are ready!", Duration = 5 })
+-- c00lkidd
+local c00lkidd = window:CreateTab({ Name = "c00lkidd", Title = "c00lkidd", Icon = "rbxassetid://96457830014743" })
 
+c00lkidd:AddSection("Troll Scripts")
+
+c00lkidd:AddButton({ Name = "Decal Spam", Callback = function()
+    local decalID = 8408806737
+    local function exPro(root)
+        for _, v in pairs(root:GetChildren()) do
+            if v:IsA("Decal") and v.Texture ~= "http://www.roblox.com/asset/?id="..decalID then
+                v.Parent = nil
+            elseif v:IsA("BasePart") then
+                v.Material = "Plastic"
+                v.Transparency = 0
+                for i = 1, 6 do
+                    local d = Instance.new("Decal", v)
+                    d.Texture = "http://www.roblox.com/asset/?id="..decalID
+                    if i == 1 then d.Face = "Front"
+                    elseif i == 2 then d.Face = "Back"
+                    elseif i == 3 then d.Face = "Right"
+                    elseif i == 4 then d.Face = "Left"
+                    elseif i == 5 then d.Face = "Top"
+                    elseif i == 6 then d.Face = "Bottom" end
+                end
+            end
+            exPro(v)
+        end
+    end
+    exPro(game.Workspace)
+    local s = Instance.new("Sky", game.Lighting)
+    s.SkyboxBk = "http://www.roblox.com/asset/?id="..decalID
+    s.SkyboxDn = "http://www.roblox.com/asset/?id="..decalID
+    s.SkyboxFt = "http://www.roblox.com/asset/?id="..decalID
+    s.SkyboxLf = "http://www.roblox.com/asset/?id="..decalID
+    s.SkyboxRt = "http://www.roblox.com/asset/?id="..decalID
+    s.SkyboxUp = "http://www.roblox.com/asset/?id="..decalID
+    game.Lighting.TimeOfDay = 12
+    task.spawn(function()
+        while true do
+            game.Lighting.Ambient = Color3.new(math.random(), math.random(), math.random())
+            task.wait(0.2)
+            game.Lighting.ShadowColor = Color3.new(math.random(), math.random(), math.random())
+            task.wait(0.2)
+        end
+    end)
+end })
+
+c00lkidd:AddButton({ Name = "JOHN DOE", Callback = function()
+    local redSkyboxAssetId = "rbxassetid://1012887"
+    local sky = game.Lighting:FindFirstChildOfClass("Sky") or Instance.new("Sky", game.Lighting)
+    sky.SkyboxBk = redSkyboxAssetId
+    sky.SkyboxDn = redSkyboxAssetId
+    sky.SkyboxFt = redSkyboxAssetId
+    sky.SkyboxLf = redSkyboxAssetId
+    sky.SkyboxRt = redSkyboxAssetId
+    sky.SkyboxUp = redSkyboxAssetId
+    local backgroundSound = game:GetService("SoundService"):FindFirstChild("PersistentBGSound") or Instance.new("Sound", game:GetService("SoundService"))
+    backgroundSound.Name = "PersistentBGSound"
+    backgroundSound.SoundId = "rbxassetid://19094700"
+    backgroundSound.PlaybackSpeed = 0.221
+    backgroundSound.Looped = true
+    backgroundSound.Volume = 1
+    backgroundSound:Play()
+end })
+
+window:Notify({ Title = "MrXT Hub", Text = "All features are ready!", Duration = 5 })
