@@ -114,13 +114,30 @@ local home = window:CreateTab({ Name = "Home", Title = "Home", Icon = "rbxasseti
 home:AddSection("Welcome MrXT Hub")
 home:AddButton({ Name = "Copy Discord Server", Callback = function() setclipboard("https://discord.gg/v3GFFNDj9") end })
 
--- COMBAT
-local combat = window:CreateTab({ Name = "Combat", Title = "Combat", Icon = "rbxassetid://96457830014743" })
-combat:AddToggle({ Name = "Aimbot Assist", Callback = function(v) states.aimbot = v end })
-combat:AddDropdown({ Name = "Aim Target", Options = {"Head", "HumanoidRootPart", "LowerTorso"}, Default = "Head", Callback = function(v) states.aimPart = v end })
-combat:AddSlider({ Name = "Smoothness", Min = 1, Max = 10, Default = 2, Callback = function(v) states.smoothness = v/10 end })
-combat:AddToggle({ Name = "Auto Clicker", Callback = function(v) states.autoClick = v end })
-combat:AddToggle({ Name = "Spin-Bot", Callback = function(v) states.spinBot = v end })
+-- COMBAT & VISUALS (UNIFICADA)
+local cv = window:CreateTab({ Name = "Combat & Visuals", Title = "Combat & Visuals", Icon = "rbxassetid://96457830014743" })
+
+cv:AddSection("Combat Settings")
+cv:AddToggle({ Name = "Aimbot Assist", Callback = function(v) states.aimbot = v end })
+cv:AddDropdown({ Name = "Aim Target", Options = {"Head", "HumanoidRootPart", "LowerTorso"}, Default = "Head", Callback = function(v) states.aimPart = v end })
+cv:AddSlider({ Name = "Smoothness", Min = 1, Max = 10, Default = 2, Callback = function(v) states.smoothness = v/10 end })
+cv:AddToggle({ Name = "Auto Clicker", Callback = function(v) states.autoClick = v end })
+cv:AddToggle({ Name = "Spin-Bot", Callback = function(v) states.spinBot = v end })
+
+cv:AddSection("Visual Settings")
+cv:AddToggle({ Name = "ESP (Glow)", Callback = function(v) states.esp = v end })
+cv:AddToggle({ Name = "ESP (Names)", Callback = function(v) states.espNames = v end })
+cv:AddButton({ Name = "Fullbright", Callback = function() Lighting.Brightness = 2; Lighting.ClockTime = 14; Lighting.GlobalShadows = false end })
+cv:AddSlider({ Name = "Field of View (FOV)", Min = 70, Max = 120, Default = 70, Callback = function(v) camera.FieldOfView = v end })
+
+cv:AddSection("World Settings")
+cv:AddButton({ Name = "Remove Textures (FPS Boost)", Callback = function()
+    for _,v in pairs(game:GetDescendants()) do
+        if v:IsA("CharacterMesh") or v:IsA("Decal") or v:IsA("Texture") then v:Destroy() end
+    end
+end })
+cv:AddButton({ Name = "Remove Fog", Callback = function() Lighting.FogEnd = 9e9 end })
+cv:AddButton({ Name = "Force Shift Lock (Mobile)", Callback = function() player.DevEnableMouseLock = true end })
 
 -- MOVEMENT
 local move = window:CreateTab({ Name = "Movement", Title = "Movement", Icon = "rbxassetid://96457830014743" })
@@ -141,23 +158,6 @@ move:AddSlider({ Name = "WalkSpeed", Min = 16, Max = 1000, Default = 16, Callbac
 move:AddSlider({ Name = "JumpPower", Min = 50, Max = 1000, Default = 50, Callback = function(v) player.Character.Humanoid.JumpPower = v end })
 move:AddSlider({ Name = "Fly Speed", Min = 10, Max = 1000, Default = 50, Callback = function(v) states.flySpeed = v end })
 
--- VISUALS
-local visual = window:CreateTab({ Name = "Visuals", Title = "Visuals", Icon = "rbxassetid://96457830014743" })
-visual:AddToggle({ Name = "ESP (Glow)", Callback = function(v) states.esp = v end })
-visual:AddToggle({ Name = "ESP (Names)", Callback = function(v) states.espNames = v end })
-visual:AddButton({ Name = "Fullbright", Callback = function() Lighting.Brightness = 2; Lighting.ClockTime = 14; Lighting.GlobalShadows = false end })
-visual:AddSlider({ Name = "Field of View (FOV)", Min = 70, Max = 120, Default = 70, Callback = function(v) camera.FieldOfView = v end })
-
--- WORLD & FPS
-local world = window:CreateTab({ Name = "World", Title = "World", Icon = "rbxassetid://96457830014743" })
-world:AddButton({ Name = "Remove Textures (FPS Boost)", Callback = function()
-    for _,v in pairs(game:GetDescendants()) do
-        if v:IsA("CharacterMesh") or v:IsA("Decal") or v:IsA("Texture") then v:Destroy() end
-    end
-end })
-world:AddButton({ Name = "Remove Fog", Callback = function() Lighting.FogEnd = 9e9 end })
-world:AddButton({ Name = "Force Shift Lock (Mobile)", Callback = function() player.DevEnableMouseLock = true end })
-
 -- UTILS
 local utils = window:CreateTab({ Name = "Utils", Title = "Utils", Icon = "rbxassetid://96457830014743" })
 utils:AddButton({ Name = "Infinite Yield", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))() end })
@@ -170,7 +170,7 @@ utils:AddButton({ Name = "Server Hop", Callback = function()
     for _, v in pairs(x.data) do if v.playing < v.maxPlayers then game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, v.id) end end
 end })
 
--- // c00lkidd (SUPER ABA - TUDO INCLUÍDO)
+-- // c00lkidd
 local c00lkidd = window:CreateTab({ Name = "c00lkidd", Title = "c00lkidd", Icon = "rbxassetid://96457830014743" })
 
 local selectedPlayer = ""
@@ -181,25 +181,19 @@ local function getPlayers()
 end
 
 local pDrop = c00lkidd:AddDropdown({ Name = "Select Target", Options = getPlayers(), Default = "None", Callback = function(v) selectedPlayer = v end })
-
 c00lkidd:AddButton({ Name = "Refresh Player List", Callback = function() pDrop:SetOptions(getPlayers()) end })
 
 c00lkidd:AddSection("Universal Chaos")
-
 c00lkidd:AddButton({ Name = "Decal Spam (FE Universal)", Callback = function()
     local decalID = 8408806737
-    -- Tenta via Remotes de Brookhaven (TVs/Quadros)
     local re = game:GetService("ReplicatedStorage"):FindFirstChild("RE")
     if re then re:FireServer("UpdateHousePicture", decalID) end
-    
-    -- Tenta via Remotes de Pintura Comuns em outros jogos
     for _, v in pairs(game:GetDescendants()) do
         if v:IsA("RemoteEvent") and (v.Name:find("Paint") or v.Name:find("Texture") or v.Name:find("Decal")) then
             v:FireServer(decalID)
             v:FireServer("Sky", decalID)
         end
     end
-    -- Efeito Visual Local (Todos os objetos viram c00lkidd para você)
     for _, obj in pairs(workspace:GetDescendants()) do
         if obj:IsA("BasePart") then
             local d = Instance.new("Decal", obj)
@@ -240,23 +234,19 @@ c00lkidd:AddButton({ Name = "Server Lag (Safe Flood)", Callback = function()
 end })
 
 c00lkidd:AddSection("Brookhaven Specials")
-
 c00lkidd:AddButton({ Name = "Unlock All House Doors", Callback = function()
     local re = game:GetService("ReplicatedStorage"):FindFirstChild("RE")
     if re then re:FireServer("HouseLock", false) end
 end })
-
 c00lkidd:AddButton({ Name = "Fire All House Alarms", Callback = function()
     local re = game:GetService("ReplicatedStorage"):FindFirstChild("RE")
     if re then re:FireServer("HouseAlarm", true) end
 end })
-
-c00lkidd:AddButton({ Name = "Brookhaven IceHub (Full Admin)", Callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/IceBear03/IceHub/main/IceHubBrookhaven.lua"))()
+c00lkidd:AddButton({ Name = "Other Hub", Callback = function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-KitK4t-Hub-81292"))()
 end })
 
 c00lkidd:AddSection("Atmosphere Trolls")
-
 c00lkidd:AddButton({ Name = "JOHN DOE Theme", Callback = function()
     local sky = game.Lighting:FindFirstChildOfClass("Sky") or Instance.new("Sky", game.Lighting)
     sky.SkyboxBk = "rbxassetid://1012887" sky.SkyboxDn = "rbxassetid://1012887"
