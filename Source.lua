@@ -114,7 +114,7 @@ local home = window:CreateTab({ Name = "Home", Title = "Home", Icon = "rbxasseti
 home:AddSection("Welcome MrXT Hub")
 home:AddButton({ Name = "Copy Discord Server", Callback = function() setclipboard("https://discord.gg/v3GFFNDj9") end })
 
--- BLOX FRUITS (NOME ALTERADO)
+-- BLOX FRUITS
 local bf = window:CreateTab({ Name = "Blox Fruits", Title = "Blox Fruits", Icon = "rbxassetid://96457830014743" })
 
 bf:AddSection("Recommended (No Key)")
@@ -175,6 +175,12 @@ end })
 local cv = window:CreateTab({ Name = "Combat & Visuals", Title = "Combat & Visuals", Icon = "rbxassetid://96457830014743" })
 
 cv:AddSection("Combat Settings")
+-- // ADICIONADO AQUI: AIMBOT UNIVERSAL
+cv:AddButton({ Name = "Aimbot Universal (no key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet("https://bitbucket.org/tekscripts/tkst/raw/9c287b9926e874d965400327b89a2c8ef6a954a5/Scripts/uni-aimbot.lua"))()
+end })
+
 cv:AddToggle({ Name = "Aimbot Assist", Callback = function(v) states.aimbot = v end })
 cv:AddDropdown({ Name = "Aim Target", Options = {"Head", "HumanoidRootPart", "LowerTorso"}, Default = "Head", Callback = function(v) states.aimPart = v end })
 cv:AddSlider({ Name = "Smoothness", Min = 1, Max = 10, Default = 2, Callback = function(v) states.smoothness = v/10 end })
