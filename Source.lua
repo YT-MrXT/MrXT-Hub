@@ -112,6 +112,14 @@ end)
 -- HOME
 local home = window:CreateTab({ Name = "Home", Title = "Home", Icon = "rbxassetid://96457830014743" })
 home:AddSection("Welcome MrXT Hub")
+
+-- // CONVITE DO DISCORD ADICIONADO AQUI
+home:AddDiscordInvite({
+	Icon = "rbxassetid://96866982801235",
+	ServerName = "MrXT Community",
+	Link = "discord.gg/v3GFFNDj9",
+})
+
 home:AddButton({ Name = "Copy Discord Server", Callback = function() setclipboard("https://discord.gg/v3GFFNDj9") end })
 
 -- BLOX FRUITS
