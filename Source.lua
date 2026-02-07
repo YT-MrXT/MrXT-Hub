@@ -175,10 +175,16 @@ end })
 local cv = window:CreateTab({ Name = "Combat & Visuals", Title = "Combat & Visuals", Icon = "rbxassetid://96457830014743" })
 
 cv:AddSection("Combat Settings")
--- // ADICIONADO AQUI: AIMBOT UNIVERSAL
+-- 1º AIMBOT UNIVERSAL
 cv:AddButton({ Name = "Aimbot Universal (no key)", Callback = function()
     window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
     loadstring(game:HttpGet("https://bitbucket.org/tekscripts/tkst/raw/9c287b9926e874d965400327b89a2c8ef6a954a5/Scripts/uni-aimbot.lua"))()
+end })
+
+-- 2º GUNGAME AIMBOT
+cv:AddButton({ Name = "GunGame Aimbot (no key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Gunfight-Arena-Gunfight-arena-Script-OP-36785"))()
 end })
 
 cv:AddToggle({ Name = "Aimbot Assist", Callback = function(v) states.aimbot = v end })
