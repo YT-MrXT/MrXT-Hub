@@ -114,6 +114,63 @@ local home = window:CreateTab({ Name = "Home", Title = "Home", Icon = "rbxasseti
 home:AddSection("Welcome MrXT Hub")
 home:AddButton({ Name = "Copy Discord Server", Callback = function() setclipboard("https://discord.gg/v3GFFNDj9") end })
 
+-- BLOX FRUITS (NOME ALTERADO)
+local bf = window:CreateTab({ Name = "Blox Fruits", Title = "Blox Fruits", Icon = "rbxassetid://96457830014743" })
+
+bf:AddSection("Recommended (No Key)")
+
+bf:AddButton({ Name = "Quantum Onyx (No Key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/QuantumOnyx.lua"))()
+end })
+
+bf:AddButton({ Name = "MrXT Classic (No Key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/YT-MrXT/MrXT-Classic/refs/heads/main/Source.lua"))()
+end })
+
+bf:AddButton({ Name = "MrXT Best (No Key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/YT-MrXT/MrXT-Best/refs/heads/main/Source.lua"))()
+end })
+
+bf:AddButton({ Name = "Redz Hub (No Key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/REDZHUB/BloxFruits/main/redz7.lua"))()
+end })
+
+bf:AddButton({ Name = "Speed Hub (No Key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV9S/SpeedHub/main/Main"))()
+end })
+
+bf:AddButton({ Name = "Ripper Hub (No Key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HibaTheBest/RipperHubV3/main/Main.lua"))()
+end })
+
+bf:AddSection("Advanced (Need Key)")
+
+bf:AddButton({ Name = "Hoho Hub (Need Key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/acsu123/HOHO_HUB/main/Loading_GUI'))()
+end })
+
+bf:AddButton({ Name = "Alchemy Hub (Need Key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Deidara_A1/AlchemyHub/main/Main.lua"))()
+end })
+
+bf:AddButton({ Name = "W-Azure (Need Key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/3b2169cf534614430541300063f237f8.lua"))()
+end })
+
+bf:AddButton({ Name = "Mukuro Hub (Need Key)", Callback = function()
+    window:Notify({ Title = "MrXT", Text = "By MrXT", Duration = 3 })
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/xQuartyx/DonateMe/main/ScriptLoader'))()
+end })
+
 -- COMBAT & VISUALS (UNIFICADA)
 local cv = window:CreateTab({ Name = "Combat & Visuals", Title = "Combat & Visuals", Icon = "rbxassetid://96457830014743" })
 
