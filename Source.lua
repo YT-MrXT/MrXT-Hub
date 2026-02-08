@@ -332,7 +332,7 @@ c00lkidd:AddButton({ Name = "Reset Camera", Callback = function()
 end })
 
 -- UTILS (MOVIDA PARA ÚLTIMO)
-local utils = window:CreateTab({ Name = "Utils", Title = "Utils", Icon = "rbxassetid://72560203611589" })
+local utils = window:CreateTab({ Name = "Utils", Title = "Utils", Icon = "rbxassetid://77179710364664" })
 utils:AddButton({ Name = "Infinite Yield", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))() end })
 utils:AddButton({ Name = "Anti-AFK", Callback = function()
     player.Idled:Connect(function() game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),camera.CFrame); task.wait(1); game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),camera.CFrame) end)
