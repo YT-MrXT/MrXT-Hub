@@ -110,10 +110,9 @@ end)
 -- // ABAS DO HUB
 
 -- HOME
-local home = window:CreateTab({ Name = "Home", Title = "Home", Icon = "rbxassetid://96457830014743" })
+local home = window:CreateTab({ Name = "Home", Title = "Home", Icon = "rbxassetid://104975690664571" })
 home:AddSection("Welcome MrXT Hub")
 
--- // CONVITE DO DISCORD ADICIONADO AQUI
 home:AddDiscordInvite({
 	Icon = "rbxassetid://96866982801235",
 	ServerName = "MrXT Community",
@@ -123,7 +122,7 @@ home:AddDiscordInvite({
 home:AddButton({ Name = "Copy Discord Server", Callback = function() setclipboard("https://discord.gg/v3GFFNDj9") end })
 
 -- BLOX FRUITS
-local bf = window:CreateTab({ Name = "Blox Fruits", Title = "Blox Fruits", Icon = "rbxassetid://96457830014743" })
+local bf = window:CreateTab({ Name = "Blox Fruits", Title = "Blox Fruits", Icon = "rbxassetid://99035244333265" })
 
 bf:AddSection("Recommended (No Key)")
 
@@ -180,7 +179,7 @@ bf:AddButton({ Name = "Mukuro Hub (Need Key)", Callback = function()
 end })
 
 -- COMBAT & VISUALS (UNIFICADA)
-local cv = window:CreateTab({ Name = "Combat & Visuals", Title = "Combat & Visuals", Icon = "rbxassetid://96457830014743" })
+local cv = window:CreateTab({ Name = "Combat & Visuals", Title = "Combat & Visuals", Icon = "rbxassetid://100022175105918" })
 
 cv:AddSection("Combat Settings")
 -- 1º AIMBOT UNIVERSAL
@@ -235,20 +234,8 @@ move:AddSlider({ Name = "WalkSpeed", Min = 16, Max = 1000, Default = 16, Callbac
 move:AddSlider({ Name = "JumpPower", Min = 50, Max = 1000, Default = 50, Callback = function(v) player.Character.Humanoid.JumpPower = v end })
 move:AddSlider({ Name = "Fly Speed", Min = 10, Max = 1000, Default = 50, Callback = function(v) states.flySpeed = v end })
 
--- UTILS
-local utils = window:CreateTab({ Name = "Utils", Title = "Utils", Icon = "rbxassetid://96457830014743" })
-utils:AddButton({ Name = "Infinite Yield", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))() end })
-utils:AddButton({ Name = "Anti-AFK", Callback = function()
-    player.Idled:Connect(function() game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),camera.CFrame); task.wait(1); game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),camera.CFrame) end)
-end })
-utils:AddButton({ Name = "Rejoin Server", Callback = function() game:GetService("TeleportService"):Teleport(game.PlaceId, player) end })
-utils:AddButton({ Name = "Server Hop", Callback = function()
-    local x = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"))
-    for _, v in pairs(x.data) do if v.playing < v.maxPlayers then game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, v.id) end end
-end })
-
 -- // c00lkidd
-local c00lkidd = window:CreateTab({ Name = "c00lkidd", Title = "c00lkidd", Icon = "rbxassetid://96457830014743" })
+local c00lkidd = window:CreateTab({ Name = "c00lkidd", Title = "c00lkidd", Icon = "rbxassetid://78210180370953" })
 
 local selectedPlayer = ""
 local function getPlayers()
@@ -342,6 +329,18 @@ end })
 
 c00lkidd:AddButton({ Name = "Reset Camera", Callback = function()
     camera.CameraSubject = player.Character.Humanoid
+end })
+
+-- UTILS (MOVIDA PARA ÚLTIMO)
+local utils = window:CreateTab({ Name = "Utils", Title = "Utils", Icon = "rbxassetid://72560203611589" })
+utils:AddButton({ Name = "Infinite Yield", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))() end })
+utils:AddButton({ Name = "Anti-AFK", Callback = function()
+    player.Idled:Connect(function() game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),camera.CFrame); task.wait(1); game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),camera.CFrame) end)
+end })
+utils:AddButton({ Name = "Rejoin Server", Callback = function() game:GetService("TeleportService"):Teleport(game.PlaceId, player) end })
+utils:AddButton({ Name = "Server Hop", Callback = function()
+    local x = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"))
+    for _, v in pairs(x.data) do if v.playing < v.maxPlayers then game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, v.id) end end
 end })
 
 window:Notify({ Title = "MrXT Hub", Text = "All features are ready!", Duration = 5 })
