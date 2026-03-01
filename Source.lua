@@ -20,6 +20,7 @@ local camera = workspace.CurrentCamera
 local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
 local HttpService = game:GetService("HttpService")
+local TweenService = game:GetService("TweenService") -- Adicionado para o TP suave
 
 local states = {
     aimbot = false,
@@ -178,6 +179,110 @@ bf:AddButton({ Name = "Mukuro Hub (Need Key)", Callback = function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/xQuartyx/DonateMe/main/ScriptLoader'))()
 end })
 
+-- // INÍCIO DOS NOVOS RECURSOS: AUTO STATS & TELEPORTS //
+bf:AddSection("Built-in Features (MrXT)")
+
+local autoStatsStates = { Enabled = false, SelectedStat = "Melee" }
+
+bf:AddDropdown({ Name = "Select Stat to Upgrade", Options = {"Melee", "Defense", "Sword", "Gun", "Demon Fruit"}, Default = "Melee", Callback = function(v) 
+    autoStatsStates.SelectedStat = v 
+end })
+
+bf:AddToggle({ Name = "Auto Stats", Callback = function(v) 
+    autoStatsStates.Enabled = v
+    if v then
+        task.spawn(function()
+            while autoStatsStates.Enabled do
+                pcall(function()
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AddPoint", autoStatsStates.SelectedStat, 1)
+                end)
+                task.wait(0.1)
+            end
+        end)
+    end
+end })
+
+local islandsData = {
+    -- SEA 1
+    ["Starter Island (Pirate) (Sea 1)"] = CFrame.new(979, 16, 1419),
+    ["Starter Island (Marine) (Sea 1)"] = CFrame.new(-2566, 6, 2045),
+    ["Jungle (Sea 1)"] = CFrame.new(-1600, 37, 153),
+    ["Pirate Village (Sea 1)"] = CFrame.new(-1185, 4, 3813),
+    ["Desert (Sea 1)"] = CFrame.new(897, 6, 4390),
+    ["Middle Town (Sea 1)"] = CFrame.new(-689, 7, 1530),
+    ["Frozen Village (Sea 1)"] = CFrame.new(1360, 37, -1909),
+    ["Marine Fortress (Sea 1)"] = CFrame.new(-5026, 21, 4281),
+    ["Skylands (Sea 1)"] = CFrame.new(-4986, 717, -2626),
+    ["Upper Skylands (Sea 1)"] = CFrame.new(196, 4776, -4506),
+    ["Prison (Sea 1)"] = CFrame.new(4830, 6, 718),
+    ["Colosseum (Sea 1)"] = CFrame.new(-3144, 305, -2982),
+    ["Magma Village (Sea 1)"] = CFrame.new(-5283, 8, 8504),
+    ["Underwater City (Sea 1)"] = CFrame.new(61163, 11, 1569),
+    ["Fountain City (Sea 1)"] = CFrame.new(5258, 38, 4050),
+    ["Mob Boss Island (Sea 1)"] = CFrame.new(-2850, 7, 5336),
+
+    -- SEA 2
+    ["Kingdom of Rose (Sea 2)"] = CFrame.new(147, 23, 2776),
+    ["Cafe (Sea 2)"] = CFrame.new(-380, 73, 296),
+    ["Green Zone (Sea 2)"] = CFrame.new(-2415, 73, -3172),
+    ["Graveyard (Sea 2)"] = CFrame.new(-1499, 133, -2763),
+    ["Snow Mountain (Sea 2)"] = CFrame.new(878, 412, -3162),
+    ["Hot and Cold (Sea 2)"] = CFrame.new(-5854, 16, -5052),
+    ["Cursed Ship (Sea 2)"] = CFrame.new(923, 125, 32852),
+    ["Ice Castle (Sea 2)"] = CFrame.new(6148, 294, -6934),
+    ["Forgotten Island (Sea 2)"] = CFrame.new(-3032, 239, -10145),
+    ["Dark Arena (Sea 2)"] = CFrame.new(3798, 15, -3494),
+    ["Usoapp's Island (Sea 2)"] = CFrame.new(4800, 8, 2800),
+
+    -- SEA 3
+    ["Port Town (Sea 3)"] = CFrame.new(-290, 7, 5344),
+    ["Hydra Island (Sea 3)"] = CFrame.new(5748, 610, -253),
+    ["Great Tree (Sea 3)"] = CFrame.new(2285, 74, -7105),
+    ["Floating Turtle (Sea 3)"] = CFrame.new(-12470, 334, -7517),
+    ["Mansion (Sea 3)"] = CFrame.new(-12463, 334, -7520),
+    ["Castle on the Sea (Sea 3)"] = CFrame.new(-5043, 314, -3157),
+    ["Haunted Castle (Sea 3)"] = CFrame.new(-9494, 142, 5526),
+    ["Sea of Treats (Sea 3)"] = CFrame.new(-2123, 50, -11915),
+    ["Peanut Island (Sea 3)"] = CFrame.new(-2000, 50, -10000),
+    ["Ice Cream Island (Sea 3)"] = CFrame.new(-900, 65, -10900),
+    ["Cake Island (Sea 3)"] = CFrame.new(-1900, 37, -12000),
+    ["Chocolate Island (Sea 3)"] = CFrame.new(150, 24, -12000),
+    ["Tiki Outpost (Sea 3)"] = CFrame.new(-16200, 10, 300)
+}
+
+local islandNames = {}
+for name, _ in pairs(islandsData) do table.insert(islandNames, name) end
+table.sort(islandNames)
+
+local selectedIsland = islandNames[1]
+
+bf:AddDropdown({ Name = "Select Island", Options = islandNames, Default = selectedIsland, Callback = function(v) 
+    selectedIsland = v 
+end })
+
+bf:AddButton({ Name = "Teleport", Callback = function()
+    local char = player.Character
+    if char and char:FindFirstChild("HumanoidRootPart") and islandsData[selectedIsland] then
+        local rootPart = char.HumanoidRootPart
+        local targetCFrame = islandsData[selectedIsland]
+        local dist = (rootPart.Position - targetCFrame.Position).Magnitude
+        local speed = 300 -- Velocidade do Tween (aumente ou diminua se o anticheat kickar)
+        local tweenInfo = TweenInfo.new(dist / speed, Enum.EasingStyle.Linear)
+        local tween = TweenService:Create(rootPart, tweenInfo, {CFrame = targetCFrame})
+        
+        -- Garante que o jogador flutue um pouco durante o TP para não bater no chão
+        local bv = Instance.new("BodyVelocity", rootPart)
+        bv.Velocity = Vector3.new(0, 0, 0)
+        bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+        
+        tween:Play()
+        tween.Completed:Connect(function()
+            bv:Destroy()
+        end)
+    end
+end })
+-- // FIM DOS NOVOS RECURSOS //
+
 -- COMBAT & VISUALS (UNIFICADA)
 local cv = window:CreateTab({ Name = "Combat & Visuals", Title = "Combat & Visuals", Icon = "rbxassetid://100022175105918" })
 
@@ -223,6 +328,117 @@ move:AddToggle({ Name = "Fly", Callback = function(v)
         local bv = Instance.new("BodyVelocity", player.Character.HumanoidRootPart)
         bv.Name = "XT_F"; bv.MaxForce = Vector3.new(1,1,1) * math.huge
         task.spawn(function()
+            while states.fly do bv.Velocity = camera.CFrame.LookVector * states.flySpeed; task.wait() end
+            bv:Destroy()
+        end)
+    end
+end })
+move:AddToggle({ Name = "Noclip", Callback = function(v) states.noclip = v end })
+move:AddToggle({ Name = "Infinite Jump", Callback = function(v) states.infJump = v end })
+move:AddSlider({ Name = "WalkSpeed", Min = 16, Max = 1000, Default = 16, Callback = function(v) player.Character.Humanoid.WalkSpeed = v end })
+move:AddSlider({ Name = "JumpPower", Min = 50, Max = 1000, Default = 50, Callback = function(v) player.Character.Humanoid.JumpPower = v end })
+move:AddSlider({ Name = "Fly Speed", Min = 10, Max = 1000, Default = 50, Callback = function(v) states.flySpeed = v end })
+
+-- // c00lkidd
+local c00lkidd = window:CreateTab({ Name = "c00lkidd", Title = "c00lkidd", Icon = "rbxassetid://78210180370953" })
+
+local selectedPlayer = ""
+local function getPlayers()
+    local p = {}
+    for _, v in pairs(game.Players:GetPlayers()) do table.insert(p, v.Name) end
+    return p
+end
+
+local pDrop = c00lkidd:AddDropdown({ Name = "Select Target", Options = getPlayers(), Default = "None", Callback = function(v) selectedPlayer = v end })
+c00lkidd:AddButton({ Name = "Refresh Player List", Callback = function() pDrop:SetOptions(getPlayers()) end })
+
+c00lkidd:AddSection("Universal Chaos")
+c00lkidd:AddButton({ Name = "Decal Spam (FE Universal)", Callback = function()
+    local decalID = 8408806737
+    local re = game:GetService("ReplicatedStorage"):FindFirstChild("RE")
+    if re then re:FireServer("UpdateHousePicture", decalID) end
+    for _, v in pairs(game:GetDescendants()) do
+        if v:IsA("RemoteEvent") and (v.Name:find("Paint") or v.Name:find("Texture") or v.Name:find("Decal")) then
+            v:FireServer(decalID)
+            v:FireServer("Sky", decalID)
+        end
+    end
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("BasePart") then
+            local d = Instance.new("Decal", obj)
+            d.Texture = "rbxassetid://"..decalID
+        end
+    end
+end })
+
+c00lkidd:AddButton({ Name = "Universal Kick/Crash Target", Callback = function()
+    local target = game.Players:FindFirstChild(selectedPlayer)
+    if target then
+        for _, v in pairs(game:GetDescendants()) do
+            if v:IsA("RemoteEvent") and (v.Name:lower():find("kick") or v.Name:lower():find("ban") or v.Name:lower():find("admin")) then
+                v:FireServer(target, "Exploit Detected")
+            end
+        end
+    end
+end })
+
+c00lkidd:AddButton({ Name = "Kill Target (FE Check)", Callback = function()
+    local target = game.Players:FindFirstChild(selectedPlayer)
+    if target and target.Character then
+        for _, v in pairs(game:GetDescendants()) do
+            if v:IsA("RemoteEvent") and (v.Name:lower():find("damage") or v.Name:lower():find("hit")) then
+                v:FireServer(target.Character.Humanoid, 9e9)
+            end
+        end
+    end
+end })
+
+c00lkidd:AddButton({ Name = "Server Lag (Safe Flood)", Callback = function()
+    task.spawn(function()
+        while task.wait(0.6) do
+            local re = game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents")
+            if re then re.SayMessageRequest:FireServer(string.rep("c00lkidd ", 25), "All") end
+        end
+    end)
+end })
+
+c00lkidd:AddSection("Brookhaven Specials")
+c00lkidd:AddButton({ Name = "Unlock All House Doors", Callback = function()
+    local re = game:GetService("ReplicatedStorage"):FindFirstChild("RE")
+    if re then re:FireServer("HouseLock", false) end
+end })
+c00lkidd:AddButton({ Name = "Fire All House Alarms", Callback = function()
+    local re = game:GetService("ReplicatedStorage"):FindFirstChild("RE")
+    if re then re:FireServer("HouseAlarm", true) end
+end })
+c00lkidd:AddButton({ Name = "Other Hub", Callback = function()
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-KitK4t-Hub-81292"))()
+end })
+
+c00lkidd:AddSection("Atmosphere Trolls")
+c00lkidd:AddButton({ Name = "JOHN DOE Theme", Callback = function()
+    local sky = game.Lighting:FindFirstChildOfClass("Sky") or Instance.new("Sky", game.Lighting)
+    sky.SkyboxBk = "rbxassetid://1012887" sky.SkyboxDn = "rbxassetid://1012887"
+    sky.SkyboxFt = "rbxassetid://1012887" sky.SkyboxLf = "rbxassetid://1012887"
+    sky.SkyboxRt = "rbxassetid://1012887" sky.SkyboxUp = "rbxassetid://1012887"
+    game.Lighting.FogColor = Color3.new(1, 0, 0)
+    game.Lighting.FogEnd = 100
+    local s = Instance.new("Sound", game.Workspace)
+    s.SoundId = "rbxassetid://19094700" s.Volume = 2 s.Looped = true s:Play()
+end })
+
+c00lkidd:AddButton({ Name = "Spectate Target", Callback = function()
+    local target = game.Players:FindFirstChild(selectedPlayer)
+    if target and target.Character then camera.CameraSubject = target.Character.Humanoid end
+end })
+
+c00lkidd:AddButton({ Name = "Reset Camera", Callback = function()
+    camera.CameraSubject = player.Character.Humanoid
+end })
+
+-- UTILS (MOVIDA PARA ÚLTIMO)
+local utils = window:CreateTab({ Name = "Utils", Title = "Utils", Icon = "rbxassetid://77179710364664" })
+utils:AddButton({ Name = "Infinite Yield", Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/mastertion()
             while states.fly do bv.Velocity = camera.CFrame.LookVector * states.flySpeed; task.wait() end
             bv:Destroy()
         end)
