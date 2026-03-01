@@ -114,6 +114,7 @@ home:AddButton({ Name = "Copy Discord Server", Callback = function() setclipboar
 
 local bf = window:CreateTab({ Name = "Blox Fruits", Title = "Blox Fruits", Icon = "rbxassetid://99035244333265" })
 bf:AddSection("Recommended (No Key)")
+bf:AddButton({ Name = "MrXT Hub Farm (No Key)", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/YT-MrXT/MrXT-Hub-Uni/refs/heads/main/Source.lua"))() end })
 bf:AddButton({ Name = "Quantum Onyx (No Key)", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/QuantumOnyx.lua"))() end })
 bf:AddButton({ Name = "MrXT Classic (No Key)", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/YT-MrXT/MrXT-Classic/refs/heads/main/Source.lua"))() end })
 bf:AddButton({ Name = "MrXT Best (No Key)", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/YT-MrXT/MrXT-Best/refs/heads/main/Source.lua"))() end })
