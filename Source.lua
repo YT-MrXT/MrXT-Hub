@@ -5,6 +5,7 @@ local window = CatLib:CreateWindow({
 	Subtitle = "By MrXT",
 	Icon = "rbxassetid://96866982801235",
 	Size = UDim2.new(0, 500, 0, 300),
+    Theme = "Yellow",
 	FloatingButton = {
 		Enabled = true,
 		Icon = "rbxassetid://96866982801235",
